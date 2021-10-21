@@ -9,4 +9,4 @@ COPY . .
 
 ENTRYPOINT [ "python" ]
 
-CMD [ "lib/trends.py" ]
+CMD [ "src/trends.py" ]

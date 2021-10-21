@@ -1,8 +1,11 @@
 import asyncio
+import sys
+import os
+import json
 from nats.aio.client import Client as NATS
 from stan.aio.client import Client as STAN
 
-
+from logic import routine
 
 class NatsService:
     def __init__(self, nats_server_address, nats_server_channel):
@@ -28,6 +31,12 @@ class NatsService:
         print("creation done")
         await self.sc.connect(self.CHANNEL, "trend-client", nats=self.nc)
         async def message_handler(msg):
-            data = msg.data.decode()
+            try:
+                data = msg.data.decode()
+                js = json.loads(data)
+                if 'ticker' in js:
+                    routine(js['ticker'])
+            except Exception as e:
+                print("something went wrong ", e)
         print("subscribing to event message")
         await self.sc.subscribe("CANDLE_UPDATE", cb=message_handler)
