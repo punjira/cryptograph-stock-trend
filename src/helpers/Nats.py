@@ -16,7 +16,7 @@ class NatsService:
         self.RECONNECTTIMEWAIT = 5
         self.nc = NATS()
         self.sc = STAN()
-    
+
     def start_listening(self):
         loop = asyncio.get_event_loop()
         try:
@@ -35,7 +35,8 @@ class NatsService:
                 data = msg.data.decode()
                 js = json.loads(data)
                 if 'ticker' in js:
-                    routine(js['ticker'])
+                    message = routine(js['ticker'])
+                    await self.sc.publish("TREND_EVENT", json.dumps(message).encode('utf-8'))
             except Exception as e:
                 print("something went wrong ", e)
         print("subscribing to event message")
