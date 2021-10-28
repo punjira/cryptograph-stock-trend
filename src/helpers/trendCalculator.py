@@ -17,7 +17,6 @@ def calculateFit(x, y, order):
     return fit
 
 def processTrendOnSet(close, date):
-    print("processing data")
     x, y = preProcessCandles(close, date)
     r_score = 0
     order = 1
@@ -35,6 +34,7 @@ def processTrendOnSet(close, date):
         # set new data and publish update
         direction = ""
         isStrong = False
+        trendStart = 0
         first_order_derivative = 0
         for ii, cc in enumerate(fit):
             if fit.size-ii-2 >= 0:
@@ -44,10 +44,12 @@ def processTrendOnSet(close, date):
         else:
             direction = "negative"
         signs = np.sign(first_order_derivative)
-        if direction=="positive" and np.all(signs==1):
+        if np.all(signs==1) or np.all(signs==-1):
             isStrong = True
-        elif direction=="negative" and np.all(signs==-1):
-            isString = True
-        return direction, isStrong
+            trendStart = 200
+        else:
+            signchange = ((np.roll(signs, 1) - signs) != 0).astype(int)
+            trendStart = 200 - np.where(signchange==1)[0][np.where(signchange==1)[0].size-1]
+        return direction, isStrong, trendStart
     else:
-        return None, None
+        return None, None, None
