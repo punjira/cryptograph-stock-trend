@@ -9,4 +9,6 @@ COPY . .
 
 ENTRYPOINT [ "python" ]
 
-CMD [ "src/trends.py" ]
+EXPOSE 5000
+
+CMD [ "src/server.py" ]
