@@ -1,3 +1,5 @@
 redis
 asyncio-nats-streaming
 numpy
+flask
+flask_restful
