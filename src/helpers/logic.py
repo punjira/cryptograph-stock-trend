@@ -27,6 +27,7 @@ def routine(hashkey):
             return {
                 "key": hashkey,
                 "status": 1,
+                "location": date[-1],
                 "details": {
                     "dir": dir,
                     "strength": strength,
