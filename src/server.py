@@ -2,6 +2,10 @@ from flask import Flask
 from flask_restful import Resource, Api, reqparse
 import ast
 
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
 import os
 import sys
 
